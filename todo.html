@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-context-menu@2.0.6/vue-context-menu.min.js"></script>
+    <script src="main.js" defer></script>
+  </head>
+  <body>
+    <div class="container mt-3">
+      <div id="app">
+        <div v-show="showLink">
+          <p class="text-right badge badge-primary cursor" @click="showDone = !showDone">{{showDone ? 'hide' : 'show'}} done list</p>  
+          <div class="done" v-show="showDone">
+            <h2>Done!</h2>
+              <ul class="list-unstyled">
+                <li class="border-bottom task-pad" v-for="(done, n) in done">
+                  <input type="checkbox" @click="removeDone(n)" class="check-done" checked="checked">
+                  <span @contextMenu.prevent="storeDeleteNum(n); $refs.ctxMenuDone.open($event)">
+                    <span @dblclick="showEditDoneInput(n)" v-if="doneNum !== n">{{ done }}</span>
+                  </span>
+                  <input v-model.trim="done" v-if="doneNum === n" @keydown.enter="editDone(n, done)" class="w-95 no-border bg-light" maxlength="60" @blur="editBlurDone(n, done)" :ref="n">
+                </li>
+              </ul>
+            <context-menu ref="ctxMenuDone">      
+              <li @click="deleteDone(deleteNum)">delete this done task</li>
+            </context-menu>
+          </div>
+        </div>
+        <div class="todo">
+          <h2>Todo</h2>
+            <ul class="list-unstyled">
+              <li class="border-bottom task-pad" v-for="(task, n) in tasks">
+                <input type="checkbox" @click="removeTask(n)" class="uncheck-task">
+                <span @contextMenu.prevent="storeDeleteNum(n); $refs.ctxMenuTask.open($event)">
+                  <span @dblclick="showEditTaskInput(n)" v-if="taskNum !== n">{{ task }}</span>
+                </span>
+                <input v-model.trim="task" v-if="taskNum === n" @keydown.enter="editTask(n, task)" class="w-95 no-border bg-light" maxlength="60" @blur="editBlurTask(n, task)" :ref="n">
+              </li>
+            </ul>
+          <context-menu ref="ctxMenuTask">      
+            <li @click="deleteTask(deleteNum)">delete this task</li>
+          </context-menu>
+        </div>
+        <div>
+          <input v-model.trim="newTask" class="w-100 no-border border-bottom" @keydown.enter="addTask" placeholder="Please type your task here." maxlength="60">
+        </div>
+        <p @click="deleteAllEntry" class="text-right text-muted mt-3 cursor float-right">delete all lists</p>
+      </div>
+    </div>
+  </body>
+</html>

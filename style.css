@@ -1,0 +1,35 @@
+.no-border {
+  border: 0;
+  outline: none;
+}
+
+input[type="checkbox"] {
+  font-size:30px;
+}
+
+.open>.ctx-menu {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.ctx-menu-left {
+  left: 1rem;
+}
+
+.open>.ctx-menu:hover {
+  background-color: #1479FB;
+  color: white;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+.task-pad {
+  margin: 1rem 0rem;
+}
+
+.cursor {
+  cursor: pointer;
+}
